@@ -1,0 +1,75 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "github-copilot/claude-opus-4.5",
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "git status *": "allow",
+      "git diff *": "allow",
+      "git log *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
+      "dotnet build *": "allow",
+      "dotnet test *": "allow",
+      "grep *": "allow",
+      "echo *": "allow",
+      "find *": "allow",
+      "fd *": "allow"
+    },
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow"
+  },
+  "agent": {
+    "build":
+    {
+      "model": "github-copilot/claude-sonnet-4.5"
+    },
+    "chat": {
+      "description": "Explores code base and helps the user understand, explore, debug and troubleshoot the code via interactive chats.",
+      "mode": "primary",
+      "model": "github-copilot/claude-opus-4.5",
+      "prompt": "You are an expert on the current code base. What you don't initially know you will figure out by exploring the code base. Your job is to answer the user's questions with understandable responses, small code snippets and visual diagrams and help the user dive into the code when debugging or troubleshooting is needed.",
+      "permission": {
+        "edit": "ask"
+      },
+      "tools": {
+        "glob": true,
+        "grep": true,
+        "list": true,
+        "read": true,
+        "edit": true,
+        "write": true
+      }
+    },
+    "code-reviewer": {
+      "description": "Reviews code for best practices and potential issues",
+      "mode": "subagent",
+      "model": "github-copilot/claude-sonnet-4.5",
+      "prompt": "You are a code reviewer. Focus on security, performance, and maintainability.",
+      "permission": {
+        "edit": "deny"
+      },
+      "tools": {
+        "glob": true,
+        "grep": true,
+        "list": true,
+        "read": true,
+        "edit": false,
+        "write": false
+      }
+    },
+    "developer": {
+      "description": "A senior software developer",
+      "mode": "subagent",
+      "model": "github-copilot/claude-sonnet-4.5",
+      "prompt": "You are a senior software developer. You focus on writing clean, maintainable code while adhering to the principles of SOLID",
+      "permission": {
+        "edit": "allow",
+        "bash": {
+          "mkdir *": "allow"
+        }
+      }
+    }
+  }
+}
